@@ -1,0 +1,766 @@
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import Category from "./models/category.model";
+import Product from "./models/product.model";
+
+dotenv.config();
+
+const run = async () => {
+  await mongoose.connect(process.env.MONGO_DB_URL);
+  console.log("Connected. Seeding...");
+
+  await Category.deleteMany();
+  await Product.deleteMany();
+
+  const [phone, laptop, tablet] = await Category.insertMany([
+    {
+      name: "Điện thoại",
+      slug: "dien-thoai",
+      description: "Điện thoại thông minh",
+    },
+    { name: "Laptop", slug: "laptop", description: "Máy tính xách tay" },
+    {
+      name: "Máy tính bảng",
+      slug: "may-tinh-bang",
+      description: "Máy tính bảng",
+    },
+  ]);
+
+  await Product.insertMany([
+    {
+      name: "iPhone 16 Pro Max",
+      slug: "iphone-16-pro-max",
+      description:
+        "iPhone 16 Pro Max với chip A18 Pro, camera 48MP, màn hình 6.9 inch Super Retina XDR.",
+      price: 34990000,
+      salePrice: 31990000,
+      images: [
+        "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",
+        "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400",
+      ],
+      category: phone._id,
+      stock: 50,
+      sold: 320,
+      isNew: true,
+      isFeatured: true,
+      rating: 4.8,
+      numReviews: 95,
+    },
+    {
+      name: "Samsung Galaxy S25 Ultra",
+      slug: "samsung-galaxy-s25-ultra",
+      description:
+        "Samsung Galaxy S25 Ultra với bút S Pen, camera 200MP, màn hình 6.8 inch Dynamic AMOLED.",
+      price: 32990000,
+      salePrice: 29990000,
+      images: [
+        "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400",
+        "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400",
+      ],
+      category: phone._id,
+      stock: 30,
+      sold: 210,
+      isNew: true,
+      isFeatured: true,
+      rating: 4.7,
+      numReviews: 80,
+    },
+    {
+      name: "Xiaomi 15 Pro",
+      slug: "xiaomi-15-pro",
+      description:
+        "Xiaomi 15 Pro với chip Snapdragon 8 Elite, camera Leica, sạc 90W.",
+      price: 22990000,
+      salePrice: 0,
+      images: [
+        "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400",
+      ],
+      category: phone._id,
+      stock: 45,
+      sold: 150,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.6,
+      numReviews: 60,
+    },
+    {
+      name: "OPPO Find X8 Pro",
+      slug: "oppo-find-x8-pro",
+      description: "OPPO Find X8 Pro với camera Hasselblad, sạc SUPERVOOC 80W.",
+      price: 28990000,
+      salePrice: 25990000,
+      images: [
+        "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=400",
+      ],
+      category: phone._id,
+      stock: 0,
+      sold: 95,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.5,
+      numReviews: 45,
+    },
+    {
+      name: "MacBook Pro M4 14 inch",
+      slug: "macbook-pro-m4-14-inch",
+      description:
+        "MacBook Pro M4 với chip Apple M4, màn hình Liquid Retina XDR, pin 22 giờ.",
+      price: 49990000,
+      salePrice: 46990000,
+      images: [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400",
+        "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400",
+      ],
+      category: laptop._id,
+      stock: 20,
+      sold: 180,
+      isNew: true,
+      isFeatured: true,
+      rating: 4.9,
+      numReviews: 120,
+    },
+    {
+      name: "Dell XPS 15 9530",
+      slug: "dell-xps-15-9530",
+      description:
+        "Dell XPS 15 với Intel Core i7 13700H, RAM 16GB, SSD 512GB, màn hình OLED.",
+      price: 42990000,
+      salePrice: 39990000,
+      images: [
+        "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400",
+      ],
+      category: laptop._id,
+      stock: 15,
+      sold: 120,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.7,
+      numReviews: 75,
+    },
+    {
+      name: "ASUS ROG Zephyrus G16",
+      slug: "asus-rog-zephyrus-g16",
+      description:
+        "Laptop gaming ASUS ROG với RTX 4070, AMD Ryzen 9, tản nhiệt MUX Switch.",
+      price: 55990000,
+      salePrice: 0,
+      images: [
+        "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400",
+      ],
+      category: laptop._id,
+      stock: 10,
+      sold: 80,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.8,
+      numReviews: 55,
+    },
+    {
+      name: "iPad Pro M4 11 inch",
+      slug: "ipad-pro-m4-11-inch",
+      description:
+        "iPad Pro M4 với màn hình OLED Ultra Retina XDR, chip M4 mạnh mẽ.",
+      price: 27990000,
+      salePrice: 25990000,
+      images: [
+        "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400",
+        "https://images.unsplash.com/photo-1587033411391-5d9e51cce126?w=400",
+      ],
+      category: tablet._id,
+      stock: 25,
+      sold: 200,
+      isNew: true,
+      isFeatured: true,
+      rating: 4.8,
+      numReviews: 90,
+    },
+    {
+      name: "Samsung Galaxy Tab S10 Ultra",
+      slug: "samsung-galaxy-tab-s10-ultra",
+      description:
+        "Galaxy Tab S10 Ultra màn hình 14.6 inch Dynamic AMOLED, bút S Pen kèm theo.",
+      price: 31990000,
+      salePrice: 28990000,
+      images: [
+        "https://images.unsplash.com/photo-1561154464-82e9adf32764?w=400",
+      ],
+      category: tablet._id,
+      stock: 18,
+      sold: 130,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.6,
+      numReviews: 70,
+    },
+  ]);
+
+  // === SẢN PHẨM GIÁ RẺ BỔ SUNG ===
+  await Product.insertMany([
+    // Dưới 5 triệu
+    {
+      name: "Realme C67",
+      slug: "realme-c67",
+      description:
+        "Realme C67 màn hình 6.72 inch 120Hz, chip Snapdragon 685, pin 5000mAh, camera 108MP.",
+      price: 4490000,
+      salePrice: 3990000,
+      images: [
+        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",
+      ],
+      category: phone._id,
+      stock: 80,
+      sold: 420,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.3,
+      numReviews: 210,
+    },
+    {
+      name: "OPPO A38",
+      slug: "oppo-a38",
+      description:
+        "OPPO A38 thiết kế mỏng nhẹ, pin 5000mAh sạc nhanh 33W, màn hình 90Hz.",
+      price: 3990000,
+      salePrice: 0,
+      images: [
+        "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400",
+      ],
+      category: phone._id,
+      stock: 60,
+      sold: 350,
+      isNew: false,
+      isFeatured: false,
+      rating: 4.1,
+      numReviews: 180,
+    },
+    {
+      name: "Samsung Galaxy A05s",
+      slug: "samsung-galaxy-a05s",
+      description:
+        "Samsung Galaxy A05s chip Snapdragon 680, camera 50MP, pin 5000mAh bền bỉ cả ngày.",
+      price: 4290000,
+      salePrice: 3790000,
+      images: [
+        "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400",
+      ],
+      category: phone._id,
+      stock: 45,
+      sold: 280,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.2,
+      numReviews: 145,
+    },
+    {
+      name: "Xiaomi Redmi 13C",
+      slug: "xiaomi-redmi-13c",
+      description:
+        "Redmi 13C chip MediaTek Helio G85, camera 50MP, pin 5000mAh, giá siêu rẻ.",
+      price: 2990000,
+      salePrice: 2690000,
+      images: [
+        "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400",
+      ],
+      category: phone._id,
+      stock: 100,
+      sold: 580,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.0,
+      numReviews: 320,
+    },
+    // 5 - 15 triệu
+    {
+      name: "Samsung Galaxy A55 5G",
+      slug: "samsung-galaxy-a55-5g",
+      description:
+        "Galaxy A55 5G với chip Exynos 1480, camera 50MP OIS, màn hình Super AMOLED 120Hz.",
+      price: 11990000,
+      salePrice: 10490000,
+      images: [
+        "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400",
+      ],
+      category: phone._id,
+      stock: 35,
+      sold: 260,
+      isNew: true,
+      isFeatured: true,
+      rating: 4.5,
+      numReviews: 130,
+    },
+    {
+      name: "iPhone 15",
+      slug: "iphone-15",
+      description:
+        "iPhone 15 chip A16 Bionic, camera 48MP Dynamic Island, cổng USB-C.",
+      price: 22990000,
+      salePrice: 19990000,
+      images: [
+        "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400",
+      ],
+      category: phone._id,
+      stock: 40,
+      sold: 310,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.7,
+      numReviews: 200,
+    },
+    {
+      name: "OPPO Reno 12",
+      slug: "oppo-reno-12",
+      description:
+        "OPPO Reno 12 chip MediaTek Dimensity 7300, camera AI Portrait 50MP, sạc SUPERVOOC 80W.",
+      price: 10990000,
+      salePrice: 9490000,
+      images: [
+        "https://images.unsplash.com/photo-1567581935884-3349723552ca?w=400",
+      ],
+      category: phone._id,
+      stock: 55,
+      sold: 190,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.4,
+      numReviews: 95,
+    },
+    {
+      name: "Laptop Acer Aspire 3 A315",
+      slug: "acer-aspire-3-a315",
+      description:
+        "Acer Aspire 3 Intel Core i5-1235U, RAM 8GB, SSD 512GB, màn hình 15.6 inch Full HD.",
+      price: 13990000,
+      salePrice: 12490000,
+      images: [
+        "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400",
+      ],
+      category: laptop._id,
+      stock: 25,
+      sold: 145,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.3,
+      numReviews: 88,
+    },
+    {
+      name: "Laptop HP 15s-fq5",
+      slug: "hp-15s-fq5",
+      description:
+        "HP 15s Intel Core i3-1215U, RAM 8GB, SSD 256GB, Windows 11 Home bản quyền.",
+      price: 9990000,
+      salePrice: 8990000,
+      images: [
+        "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400",
+      ],
+      category: laptop._id,
+      stock: 30,
+      sold: 220,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.2,
+      numReviews: 115,
+    },
+    {
+      name: "Samsung Galaxy Tab A9+",
+      slug: "samsung-galaxy-tab-a9-plus",
+      description:
+        "Galaxy Tab A9+ màn hình 11 inch 90Hz, chip Snapdragon 695, loa AKG quad speaker.",
+      price: 8990000,
+      salePrice: 7990000,
+      images: [
+        "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400",
+      ],
+      category: tablet._id,
+      stock: 40,
+      sold: 175,
+      isNew: true,
+      isFeatured: true,
+      rating: 4.4,
+      numReviews: 92,
+    },
+    {
+      name: "Vivo Y76 5G",
+      slug: "vivo-y76-5g",
+      description:
+        "Vivo Y76 5G với màn hình AMOLED 120Hz, chip Snapdragon 695, pin 5000mAh.",
+      price: 7990000,
+      salePrice: 7490000,
+      images: [
+        "https://images.unsplash.com/photo-1555435026-2f63b941bf36?w=400",
+      ],
+      category: phone._id,
+      stock: 90,
+      sold: 210,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.2,
+      numReviews: 120,
+    },
+    {
+      name: "Realme 11 Pro+",
+      slug: "realme-11-pro-plus",
+      description:
+        "Realme 11 Pro+ camera 200MP, sạc nhanh 100W, chip Dimensity 7050.",
+      price: 10990000,
+      salePrice: 9990000,
+      images: [
+        "https://images.unsplash.com/photo-1598887142489-4b8b05d6fe2f?w=400",
+      ],
+      category: phone._id,
+      stock: 65,
+      sold: 180,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.4,
+      numReviews: 105,
+    },
+    {
+      name: "Nokia G22",
+      slug: "nokia-g22",
+      description:
+        "Nokia G22 pin 5050mAh, camera 50MP, thiết kế bền bỉ và giá rẻ.",
+      price: 3690000,
+      salePrice: 3390000,
+      images: [
+        "https://images.unsplash.com/photo-1595753450903-91f7fccbb46b?w=400",
+      ],
+      category: phone._id,
+      stock: 75,
+      sold: 230,
+      isNew: false,
+      isFeatured: false,
+      rating: 4.1,
+      numReviews: 85,
+    },
+    {
+      name: "Lenovo IdeaPad 3 15",
+      slug: "lenovo-ideapad-3-15",
+      description:
+        "Lenovo IdeaPad 3 15 inch Intel Core i5, RAM 8GB, SSD 512GB.",
+      price: 14990000,
+      salePrice: 13990000,
+      images: [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400",
+      ],
+      category: laptop._id,
+      stock: 20,
+      sold: 140,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.4,
+      numReviews: 80,
+    },
+    {
+      name: "MSI Modern 14",
+      slug: "msi-modern-14",
+      description:
+        "MSI Modern 14 laptop mỏng nhẹ, Intel Core i7, RAM 16GB, SSD 512GB.",
+      price: 22990000,
+      salePrice: 21490000,
+      images: [
+        "https://images.unsplash.com/photo-1557672173-6bb5e8567130?w=400",
+      ],
+      category: laptop._id,
+      stock: 18,
+      sold: 110,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.5,
+      numReviews: 65,
+    },
+    {
+      name: "HP Pavilion 15",
+      slug: "hp-pavilion-15",
+      description:
+        "HP Pavilion 15 với Intel Core i5-1335U, RAM 16GB, SSD 512GB.",
+      price: 16990000,
+      salePrice: 15490000,
+      images: [
+        "https://images.unsplash.com/photo-1587825140708-5feda581a9da?w=400",
+      ],
+      category: laptop._id,
+      stock: 22,
+      sold: 135,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.3,
+      numReviews: 72,
+    },
+    {
+      name: "Acer Swift Go 14",
+      slug: "acer-swift-go-14",
+      description:
+        "Acer Swift Go 14 màn hình 14 inch OLED, Intel Core i5, pin 10 giờ.",
+      price: 18990000,
+      salePrice: 17490000,
+      images: [
+        "https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?w=400",
+      ],
+      category: laptop._id,
+      stock: 15,
+      sold: 95,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.4,
+      numReviews: 58,
+    },
+    {
+      name: "iPad Air M1 10.9 inch",
+      slug: "ipad-air-m1-109-inch",
+      description:
+        "iPad Air M1 với màn hình 10.9 inch Liquid Retina, chip M1, hỗ trợ Apple Pencil.",
+      price: 21990000,
+      salePrice: 19990000,
+      images: [
+        "https://images.unsplash.com/photo-1517430816045-df4b7de67507?w=400",
+      ],
+      category: tablet._id,
+      stock: 22,
+      sold: 150,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.7,
+      numReviews: 98,
+    },
+    {
+      name: "Lenovo Tab P11",
+      slug: "lenovo-tab-p11",
+      description:
+        "Lenovo Tab P11 màn hình 11 inch 2K, chip Snapdragon 662, loa stereo.",
+      price: 10990000,
+      salePrice: 9990000,
+      images: [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400",
+      ],
+      category: tablet._id,
+      stock: 28,
+      sold: 110,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.3,
+      numReviews: 67,
+    },
+    {
+      name: "Huawei MatePad 11",
+      slug: "huawei-matepad-11",
+      description:
+        "Huawei MatePad 11 với HarmonyOS, màn hình 11 inch 120Hz, bút M-Pencil.",
+      price: 11990000,
+      salePrice: 10990000,
+      images: [
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400",
+      ],
+      category: tablet._id,
+      stock: 20,
+      sold: 105,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.5,
+      numReviews: 72,
+    },
+    {
+      name: "Amazon Fire HD 10",
+      slug: "amazon-fire-hd-10",
+      description:
+        "Amazon Fire HD 10 máy tính bảng giá rẻ, màn hình 10.1 inch Full HD, pin 12 giờ.",
+      price: 5290000,
+      salePrice: 4990000,
+      images: [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400",
+      ],
+      category: tablet._id,
+      stock: 60,
+      sold: 220,
+      isNew: false,
+      isFeatured: false,
+      rating: 4.0,
+      numReviews: 180,
+    },
+    {
+      name: "Samsung Galaxy Tab S9 FE",
+      slug: "samsung-galaxy-tab-s9-fe",
+      description:
+        "Galaxy Tab S9 FE với màn hình 10.9 inch, chip Snapdragon 8 Gen 1, bút S Pen.",
+      price: 11990000,
+      salePrice: 11490000,
+      images: [
+        "https://images.unsplash.com/photo-1517430816045-df4b7de67507?w=400",
+      ],
+      category: tablet._id,
+      stock: 24,
+      sold: 145,
+      isNew: true,
+      isFeatured: true,
+      rating: 4.6,
+      numReviews: 82,
+    },
+    {
+      name: "Microsoft Surface Go 4",
+      slug: "microsoft-surface-go-4",
+      description:
+        "Surface Go 4 với Windows 11, màn hình 10.5 inch PixelSense, hỗ trợ Surface Pen.",
+      price: 12990000,
+      salePrice: 11990000,
+      images: [
+        "https://images.unsplash.com/photo-1587825140708-5feda581a9da?w=400",
+      ],
+      category: tablet._id,
+      stock: 18,
+      sold: 95,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.4,
+      numReviews: 55,
+    },
+    {
+      name: "ASUS Vivobook 16",
+      slug: "asus-vivobook-16",
+      description:
+        "ASUS Vivobook 16 với AMD Ryzen 7, RAM 16GB, SSD 512GB và màn hình NanoEdge.",
+      price: 18990000,
+      salePrice: 17490000,
+      images: [
+        "https://images.unsplash.com/photo-1587202372775-7b87b7028c70?w=400",
+      ],
+      category: laptop._id,
+      stock: 20,
+      sold: 120,
+      isNew: false,
+      isFeatured: false,
+      rating: 4.4,
+      numReviews: 60,
+    },
+    {
+      name: "Lenovo Yoga Slim 7",
+      slug: "lenovo-yoga-slim-7",
+      description:
+        "Lenovo Yoga Slim 7 mỏng nhẹ, AMD Ryzen 7, RAM 16GB và pin 14 giờ.",
+      price: 23990000,
+      salePrice: 21990000,
+      images: [
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400",
+      ],
+      category: laptop._id,
+      stock: 18,
+      sold: 100,
+      isNew: true,
+      isFeatured: true,
+      rating: 4.6,
+      numReviews: 75,
+    },
+    {
+      name: "Acer Nitro 16",
+      slug: "acer-nitro-16",
+      description:
+        "Acer Nitro 16 laptop gaming RTX 4060, Intel Core i7 và màn hình 165Hz.",
+      price: 27990000,
+      salePrice: 25990000,
+      images: [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400",
+      ],
+      category: laptop._id,
+      stock: 12,
+      sold: 90,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.5,
+      numReviews: 50,
+    },
+    {
+      name: "MacBook Air M2 13 inch",
+      slug: "macbook-air-m2-13-inch",
+      description:
+        "MacBook Air M2 13 inch với chip Apple M2, thiết kế siêu mỏng và pin 18 giờ.",
+      price: 29990000,
+      salePrice: 27990000,
+      images: [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400",
+      ],
+      category: laptop._id,
+      stock: 22,
+      sold: 140,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.9,
+      numReviews: 110,
+    },
+    {
+      name: "Samsung Galaxy Tab A8",
+      slug: "samsung-galaxy-tab-a8",
+      description:
+        "Galaxy Tab A8 màn hình 10.5 inch, pin 7040mAh, chip Unisoc và loa quad.",
+      price: 6090000,
+      salePrice: 5690000,
+      images: [
+        "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400",
+      ],
+      category: tablet._id,
+      stock: 45,
+      sold: 130,
+      isNew: false,
+      isFeatured: false,
+      rating: 4.2,
+      numReviews: 80,
+    },
+    {
+      name: "Xiaomi Pad 6",
+      slug: "xiaomi-pad-6",
+      description:
+        "Xiaomi Pad 6 với chip Snapdragon 870, màn hình 11 inch 144Hz và pin 8840mAh.",
+      price: 9990000,
+      salePrice: 9490000,
+      images: [
+        "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400",
+      ],
+      category: tablet._id,
+      stock: 30,
+      sold: 135,
+      isNew: true,
+      isFeatured: false,
+      rating: 4.5,
+      numReviews: 78,
+    },
+    {
+      name: "Apple iPad 10.9",
+      slug: "apple-ipad-10-9",
+      description:
+        "iPad 10.9 inch chip A14 Bionic, hỗ trợ Apple Pencil thế hệ 1.",
+      price: 13990000,
+      salePrice: 12990000,
+      images: [
+        "https://images.unsplash.com/photo-1517430816045-df4b7de67507?w=400",
+      ],
+      category: tablet._id,
+      stock: 25,
+      sold: 125,
+      isNew: false,
+      isFeatured: true,
+      rating: 4.6,
+      numReviews: 90,
+    },
+    {
+      name: "Lenovo Tab M10 HD",
+      slug: "lenovo-tab-m10-hd",
+      description:
+        "Lenovo Tab M10 HD màn hình 10.1 inch, chip MediaTek Helio, loa Dolby Atmos.",
+      price: 6690000,
+      salePrice: 6290000,
+      images: [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400",
+      ],
+      category: tablet._id,
+      stock: 38,
+      sold: 115,
+      isNew: false,
+      isFeatured: false,
+      rating: 4.1,
+      numReviews: 65,
+    },
+  ]);
+
+  console.log("Seed hoàn tất! Đã tạo 3 danh mục và 46 sản phẩm.");
+  await mongoose.connection.close();
+};
+
+run().catch(console.error);
