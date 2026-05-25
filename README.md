@@ -1,128 +1,154 @@
-# 📱 BT05 - Mở Rộng Tính Năng Hiển Thị Sản Phẩm
+# � BT06 - Ứng Dụng Bán Hàng Mở Rộng
 
-**Repository:** BT05 - Tiếp tục từ BT04
+**BT06** là phiên bản mở rộng của dự án bán hàng, bổ sung đầy đủ tính năng giỏ hàng, thanh toán COD và theo dõi đơn hàng.
 
 **Ngôn ngữ:** JavaScript (Node.js + React)
 
-**Cơ sở dữ liệu:** MongoDB
+**Backend:** Express.js + MongoDB
+
+**Frontend:** React + Vite + Tailwind CSS
 
 ---
 
-## ✨ Tính Năng Mới
+## ✨ Tính Năng Chính
 
-### 1️⃣ Danh Mục Sản Phẩm (Category Products)
+### 1️⃣ Giỏ hàng (Cart)
 
-- 📍 **Route:** `/category/:categorySlug`
-- 📊 Hiển thị **tất cả sản phẩm** của một danh mục
-- 📄 **Phân trang đầy đủ** (Previous | 1 2 3 | Next)
-- 🔀 **6 kiểu sắp xếp:** Mới nhất, Bán chạy, Giá↑, Giá↓, Đánh giá, Xem nhiều
-- 📱 **Responsive:** 2 cols (mobile), 3 cols (tablet), 4 cols (desktop)
+- Thêm sản phẩm vào giỏ hàng
+- Cập nhật số lượng sản phẩm
+- Xóa sản phẩm khỏi giỏ
+- Lưu giỏ hàng trên backend bằng MongoDB
+- Hiển thị tổng tiền và số lượng sản phẩm
 
-### 2️⃣ Sản Phẩm Nổi Bật (Top Products)
+### 2️⃣ Thanh toán đơn hàng COD
 
-- 📍 **Route:** `/top-products`
-- 🔥 **Section 1:** Top 10 Bán Chạy Nhất
-- 👀 **Section 2:** Top 10 Xem Nhiều Nhất
-- ↔️ **Carousel Horizontal** (Swiper)
-- ⬅️➡️ Nút điều hướng + Chỉ số trang
-- 📱 Responsive breakpoints: 1/2/3/4/5 cols
+- Form checkout với địa chỉ giao hàng và số điện thoại
+- Thanh toán COD bắt buộc
+- Tạo đơn hàng từ giỏ hàng
+- Xóa giỏ hàng sau khi đặt hàng thành công
+
+### 3️⃣ Theo dõi đơn hàng và lịch sử
+
+- Hiển thị lịch sử đơn hàng của người dùng
+- Xem trạng thái đơn hàng hiện tại
+- Hủy đơn trong vòng 30 phút kể từ khi tạo
+- Nếu đơn đang ở trạng thái chuẩn bị, gửi yêu cầu hủy đơn
+
+### 4️⃣ Trạng thái đơn hàng
+
+- `pending` - Đơn hàng mới
+- `confirmed` - Đã xác nhận
+- `preparing` - Shop đang chuẩn bị hàng
+- `shipping` - Đang giao hàng
+- `delivered` - Đã giao thành công
+- `cancelled` - Đã hủy đơn
+- `cancel_requested` - Yêu cầu hủy đơn
 
 ---
 
-## 🛠️ Tech Stack
+## 🧩 Công Nghệ Sử Dụng
 
 ### Backend
 
-- **Runtime:** Node.js
-- **Framework:** Express.js
-- **Database:** MongoDB + Mongoose
-- **Auth:** JWT + bcrypt
+- Node.js
+- Express.js
+- MongoDB + Mongoose
+- JWT Authentication
+- bcrypt
+- dotenv
 
 ### Frontend
 
-- **Framework:** React 19
-- **Routing:** React Router v7
-- **HTTP Client:** Axios
-- **Styling:** Tailwind CSS v4.3
-- **Carousel:** Swiper v11+
+- React 19
+- React Router v7
+- Vite
+- Axios
+- Tailwind CSS v4
+- Swiper
 
 ---
 
-## 📊 Database Updates
-
-### Product Model
-
-```javascript
-{
-  // ... existing fields
-  views: { type: Number, default: 0 }  // ✨ New
-}
-```
-
-**Auto-increment:** Views tăng tự động khi xem chi tiết sản phẩm
-
----
-
-## 🔌 API Endpoints
-
-| Method  | Endpoint                           | Description            |
-| ------- | ---------------------------------- | ---------------------- |
-| **GET** | `/products/category/:categorySlug` | Sản phẩm theo danh mục |
-| **GET** | `/products/top/bestsellers`        | Top 10 bán chạy nhất   |
-| **GET** | `/products/top/mostviewed`         | Top 10 xem nhiều nhất  |
-| **GET** | `/products/:slug`                  | Chi tiết (views++)     |
-
-### Query Parameters
+## 📁 Cấu Trúc Chính
 
 ```
-?page=1&limit=12&sort=newest
+BT06/
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── auth.controller.js
+│   │   │   ├── cart.controller.js
+│   │   │   ├── order.controller.js
+│   │   │   ├── product.controller.js
+│   │   │   └── category.controller.js
+│   │   ├── middleware/
+│   │   │   └── auth.middleware.js
+│   │   ├── models/
+│   │   │   ├── user.js
+│   │   │   ├── product.model.js
+│   │   │   ├── category.model.js
+│   │   │   ├── cart.model.js
+│   │   │   └── order.model.js
+│   │   ├── routes/
+│   │   │   └── api.js
+│   │   ├── server.js
+│   │   └── seed.js
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── api/
+│   │   │   ├── api.js
+│   │   │   └── axiosInstance.js
+│   │   ├── components/
+│   │   │   └── layout/
+│   │   │       ├── Header.jsx
+│   │   │       └── Footer.jsx
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx
+│   │   ├── pages/
+│   │   │   ├── CartPage.jsx
+│   │   │   ├── CheckoutPage.jsx
+│   │   │   ├── OrdersPage.jsx
+│   │   │   ├── ProductDetail.jsx
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── SearchPage.jsx
+│   │   │   ├── CategoryProductsPage.jsx
+│   │   │   ├── TopProductsPage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   └── RegisterPage.jsx
+│   │   └── App.jsx
+│   └── package.json
+└── README.md
 ```
 
 ---
 
-## 📁 New Files
+## 🚀 Chạy Dự Án
 
-### Backend
-
-- ✏️ `backend/src/models/product.model.js` - views field
-- ✏️ `backend/src/controllers/product.controller.js` - 3 new methods
-- ✏️ `backend/src/routes/api.js` - 3 new routes
-
-### Frontend
-
-- ✨ `frontend/src/pages/CategoryProductsPage.jsx` - NEW
-- ✨ `frontend/src/pages/TopProductsPage.jsx` - NEW
-- ✏️ `frontend/src/api/api.js` - 3 new functions
-- ✏️ `frontend/src/App.jsx` - 2 new routes
-- ✏️ `frontend/src/pages/HomePage.jsx` - "Sản Phẩm Nổi Bật" button
-- ✏️ `frontend/src/components/layout/Header.jsx` - Categories dropdown
-
----
-
-## 🚀 Quick Start
-
-### 1. Install Dependencies
+### 1. Cài đặt dependencies
 
 ```bash
-cd backend && npm install && cd ..
-cd frontend && npm install && cd ..
+cd "d:\UTE\NAM III\Các CNMP mới\BT06\backend"
+npm install
+
+cd "d:\UTE\NAM III\Các CNMP mới\BT06\frontend"
+npm install
 ```
 
-### 2. Start Backend
+### 2. Khởi động backend
 
 ```bash
-cd backend
+cd "d:\UTE\NAM III\Các CNMP mới\BT06\backend"
 npm start
 ```
 
-### 3. Start Frontend (new terminal)
+### 3. Khởi động frontend
 
 ```bash
-cd frontend
+cd "d:\UTE\NAM III\Các CNMP mới\BT06\frontend"
 npm run dev
 ```
 
-### 4. Open Browser
+### 4. Mở trình duyệt
 
 ```
 http://localhost:5173
@@ -130,93 +156,94 @@ http://localhost:5173
 
 ---
 
-## 🧪 Test Features
+## 🧪 API Chính
 
-### Feature 1: Category Products
+### Auth
 
-1. Header → Click "Danh mục ▼" → Select category
-2. Test sorting, pagination
-3. URL: `/category/dien-thoai?page=1&sort=newest`
+- `POST /api/v1/auth/register` - Đăng ký
+- `POST /api/v1/auth/login` - Đăng nhập
+- `GET /api/v1/auth/profile` - Lấy profile (cần token)
 
-### Feature 2: Top Products
+### Products
 
-1. Header → Click "Sản phẩm Nổi Bật"
-2. Scroll carousel left/right
-3. Click prev/next buttons
-4. URL: `/top-products`
+- `GET /api/v1/products/home` - Dữ liệu trang chủ
+- `GET /api/v1/products` - Lấy danh sách sản phẩm
+- `GET /api/v1/products/:slug` - Chi tiết sản phẩm
+- `GET /api/v1/products/category/:categorySlug` - Sản phẩm theo danh mục
+- `GET /api/v1/products/top/bestsellers` - Top sản phẩm bán chạy
+- `GET /api/v1/products/top/mostviewed` - Top sản phẩm xem nhiều
 
-### Feature 3: Auto Views
+### Categories
 
-1. View product detail (`/product/:slug`)
-2. Check: views field increments
-3. Product appears in "Most Viewed"
+- `GET /api/v1/categories` - Lấy danh mục sản phẩm
 
----
+### Cart
 
-## 📖 Documentation
+- `GET /api/v1/cart` - Lấy giỏ hàng
+- `POST /api/v1/cart` - Thêm/cập nhật giỏ hàng
+- `DELETE /api/v1/cart/:productId` - Xóa sản phẩm khỏi giỏ
+- `DELETE /api/v1/cart` - Xóa toàn bộ giỏ hàng
 
-| File                      | Purpose                       |
-| ------------------------- | ----------------------------- |
-| `QUICK_START.md`          | 🚀 Hướng dẫn chạy project     |
-| `IMPLEMENTATION_GUIDE.md` | 📖 Chi tiết tính năng & flow  |
-| `API_REFERENCE.md`        | 🔌 API endpoints & parameters |
-| `CHANGELOG.md`            | 📝 Danh sách thay đổi         |
+### Orders
 
----
-
-## 🎯 User Flow
-
-```
-HomePage
-├── Hero Banner (+ "Sản Phẩm Nổi Bật" button)
-├── Product Sections (Featured, Newest, Best Sellers, On Sale)
-└── Each section: "Xem tất cả" → FilterPage or CategoryPage
-
-Header
-├── Logo → HomePage
-├── Search → SearchPage
-├── Danh mục ▼ → /category/:slug
-├── Sản phẩm Nổi Bật → /top-products
-└── User Menu
-
-/category/:slug (NEW)
-├── Breadcrumb
-├── Category Title
-├── Sort Dropdown
-├── Product Grid (Pagination)
-└── Previous | 1 2 3 | Next
-
-/top-products (NEW)
-├── 🔥 Best Sellers Carousel (Horizontal Pagination)
-└── 👀 Most Viewed Carousel (Horizontal Pagination)
-```
+- `POST /api/v1/orders` - Tạo đơn hàng
+- `GET /api/v1/orders` - Lấy lịch sử đơn hàng
+- `GET /api/v1/orders/:id` - Xem chi tiết đơn hàng
+- `PATCH /api/v1/orders/:id/cancel` - Hủy đơn
 
 ---
 
-## ✅ Features Checklist
+## ✅ Hướng Dẫn Test Nhanh
 
-- ✅ Category products page with pagination
-- ✅ 6 sort options
-- ✅ Top best sellers page
-- ✅ Top most viewed page
-- ✅ Swiper carousel with horizontal pagination
-- ✅ Auto-increment views count
-- ✅ Categories dropdown in header
-- ✅ Navigation links
-- ✅ Responsive design (mobile/tablet/desktop)
-- ✅ Private routes (require login)
+### 1. Tạo tài khoản
+
+- Vào `/register`
+- Nhập tên, email và mật khẩu
+
+### 2. Đăng nhập
+
+- Vào `/login`
+
+### 3. Thêm sản phẩm vào giỏ hàng
+
+- Vào trang chi tiết sản phẩm
+- Click `Thêm vào giỏ` hoặc `Mua ngay`
+
+### 4. Kiểm tra giỏ hàng
+
+- Vào `/cart`
+- Chỉnh số lượng, xóa sản phẩm
+- Click `Tiến hành thanh toán`
+
+### 5. Thanh toán COD
+
+- Điền địa chỉ và số điện thoại
+- Click `Đặt hàng và thanh toán COD`
+
+### 6. Xem đơn hàng
+
+- Vào `/orders`
+- Xem lịch sử và trạng thái
+- Thử hủy đơn nếu còn hạn
 
 ---
 
-## 🔐 Security
+## 📝 Ghi chú
 
-- ✅ All product routes require JWT authentication
-- ✅ Password hashing with bcrypt
-- ✅ Protected API endpoints with middleware
+- Giỏ hàng lưu trong **MongoDB**.
+- Thanh toán hiện tại là **COD**.
+- Ví điện tử chỉ hiển thị là **đang phát triển**.
+- Trạng thái `confirmed` có thể chuyển tự động sau 30 phút.
 
 ---
 
-## 📊 Database Example
+## 🔮 Tương Lai
+
+- [ ] Thêm hỗ trợ **ví điện tử**
+- [ ] Cập nhật trạng thái đơn hàng **tự động thời gian thực**
+- [ ] Tối ưu caching / **Redis**
+- [ ] Thêm **thanh toán online**
+- [ ] Thêm **wishlist**
 
 ```javascript
 // Categories
